@@ -24,12 +24,12 @@ Buy a domain name that you want to utilize for your OOB Detection (Out of Band).
 
 2. Update your machine
 
-`apt update -y`
+    `apt update -y`
 
 
 3. Install Java
 
-`apt install default-jre`
+    `apt install default-jre`
 
 
 4. Install Golang - https://go.dev/doc/install and Notify
@@ -38,28 +38,28 @@ Buy a domain name that you want to utilize for your OOB Detection (Out of Band).
 
 *Note - Your Golang Installation ".tar.gx" may be different.*
 
-`wget https://go.dev/dl/go1.18.2.linux-amd64.tar.gz`
-`rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.2.linux-amd64.tar.gz`
-`export PATH=$PATH:/usr/local/go/bin`
+    `wget https://go.dev/dl/go1.18.2.linux-amd64.tar.gz`
+    `rm -rf /usr/local/go && tar -C /usr/local -xzf go1.18.2.linux-amd64.tar.gz`
+    `export PATH=$PATH:/usr/local/go/bin`
 
 
 * Next - Add the Go Path to your .bashrc or .profile file
 
-```
-# Golang Path Install
-export PATH=$PATH:/usr/local/go/bin
-```
+    ```
+    # Golang Path Install
+    export PATH=$PATH:/usr/local/go/bin
+    ```
 
 * Install Notify
 
-`go install -v github.com/projectdiscovery/notify/cmd/notify@latest`
+    `go install -v github.com/projectdiscovery/notify/cmd/notify@latest`
 
-`cp $HOME/go/bin/notify /usr/bin`
+    `cp $HOME/go/bin/notify /usr/bin`
 
 
 5. Make a direcrtory for all of the collaborator scripts and files
 
-`mkdir -p /usr/local/collaborator/`
+    `mkdir -p /usr/local/collaborator/`
 
 
 6. Download the Burpsuite Pro Jar File from Burpsuite
@@ -67,7 +67,7 @@ export PATH=$PATH:/usr/local/go/bin
 * https://portswigger.net/burp/releases/professional-community-2022-3-9
 * SCP the file to the Remote Server
 
-`scp burpsuite_pro_v2022.3.9.jar root@<YOUR OOB SERVER IP>:/usr/local/collaborator/`
+    `scp burpsuite_pro_v2022.3.9.jar root@<YOUR OOB SERVER IP>:/usr/local/collaborator/`
 
 *Note - If you do not want to pay for Burp Suite Pro we recommend that you setup your own [interactsh](https://github.com/projectdiscovery/interactsh) instance instead*
 
@@ -76,95 +76,95 @@ export PATH=$PATH:/usr/local/go/bin
 
 * Save it to - /usr/local/collaborator/
 
-`nano /usr/local/collaborator/collaborator.config`
+    `nano /usr/local/collaborator/collaborator.config`
 
-```
-{
-  "serverDomain" : "subdomain.domain.com", # CHANGE THIS
-  "workerThreads" : 10,
-  "eventCapture": {
-      "localAddress" : [ "XXX.XXX.XXX.XXX" ], # CHANGE THIS (PUBLIC IP OF VPS)
-      "publicAddress" : "XXX.XXX.XXX.XXX", # CHANGE THIS (PUBLIC IP OF VPS)
-      "http": {
-         "ports" : 80
+    ```
+    {
+      "serverDomain" : "subdomain.domain.com", # CHANGE THIS
+      "workerThreads" : 10,
+      "eventCapture": {
+          "localAddress" : [ "XXX.XXX.XXX.XXX" ], # CHANGE THIS (PUBLIC IP OF VPS)
+          "publicAddress" : "XXX.XXX.XXX.XXX", # CHANGE THIS (PUBLIC IP OF VPS)
+          "http": {
+             "ports" : 80
+           },
+          "https": {
+              "ports" : 443
+          },
+          "smtp": {
+              "ports" : [25, 587]
+          },
+          "smtps": {
+              "ports" : 465
+          },
+          "ssl": {
+              "certificateFiles" : [
+                  "/usr/local/collaborator/keys/privkey.pem",
+                  "/usr/local/collaborator/keys/cert.pem",
+                  "/usr/local/collaborator/keys/fullchain.pem" ]
+          }
+      },
+      "polling" : {
+          "localAddress" :  "XXX.XXX.XXX.XXX", # CHANGE THIS (PUBLIC IP OF VPS)
+          "publicAddress" :  "XXX.XXX.XXX.XXX", # CHANGE THIS (PUBLIC IP OF VPS)
+          "http": {
+              "port" : 9090
+          },
+          "https": {
+              "port" : 9443
+          },
+          "ssl": {
+              "certificateFiles" : [
+                  "/usr/local/collaborator/keys/privkey.pem",
+                  "/usr/local/collaborator/keys/cert.pem",
+                  "/usr/local/collaborator/keys/fullchain.pem" ]
+
+          }
+      },
+      "dns": {
+          "interfaces" : [{
+              "name":"ns1.subdomain.domain.com", # CHANGE THIS
+              "localAddress":"XXX.XXX.XXX.XXX", # CHANGE THIS (PUBLIC IP OF VPS)
+              "publicAddress":"XXX.XXX.XXX.XXX" # CHANGE THIS (PUBLIC IP OF VPS)
+          }],
+          "ports" : 53
        },
-      "https": {
-          "ports" : 443
-      },
-      "smtp": {
-          "ports" : [25, 587]
-      },
-      "smtps": {
-          "ports" : 465
-      },
-      "ssl": {
-          "certificateFiles" : [
-              "/usr/local/collaborator/keys/privkey.pem",
-              "/usr/local/collaborator/keys/cert.pem",
-              "/usr/local/collaborator/keys/fullchain.pem" ]
-      }
-  },
-  "polling" : {
-      "localAddress" :  "XXX.XXX.XXX.XXX", # CHANGE THIS (PUBLIC IP OF VPS)
-      "publicAddress" :  "XXX.XXX.XXX.XXX", # CHANGE THIS (PUBLIC IP OF VPS)
-      "http": {
-          "port" : 9090
-      },
-      "https": {
-          "port" : 9443
-      },
-      "ssl": {
-          "certificateFiles" : [
-              "/usr/local/collaborator/keys/privkey.pem",
-              "/usr/local/collaborator/keys/cert.pem",
-              "/usr/local/collaborator/keys/fullchain.pem" ]
-
-      }
-  },
-  "dns": {
-      "interfaces" : [{
-          "name":"ns1.subdomain.domain.com", # CHANGE THIS
-          "localAddress":"XXX.XXX.XXX.XXX", # CHANGE THIS (PUBLIC IP OF VPS)
-          "publicAddress":"XXX.XXX.XXX.XXX" # CHANGE THIS (PUBLIC IP OF VPS)
-      }],
-      "ports" : 53
-   },
-   "logLevel" : "DEBUG"
-}
-```
+       "logLevel" : "DEBUG"
+    }
+    ```
 
 
 8. Create Certificates and Configure_certs.sh script
 
-`cd /usr/local/collaborator/`
-`apt install certbot`
-`nano /usr/local/collaborator/configure_certs.sh`
+    `cd /usr/local/collaborator/`
+    `apt install certbot`
+    `nano /usr/local/collaborator/configure_certs.sh`
 
 * Then copy and past the following into the configure_certs.sh script
 
-```
-#!/bin/bash
+    ```
+    #!/bin/bash
 
-CERTBOT_DOMAIN=$1
-if [ -z $1 ];
-then
-    echo "Missing mandatory argument. "
-    echo " - Usage: $0  <domain> "
-    exit 1
-fi
-CERT_PATH=/etc/letsencrypt/live/$CERTBOT_DOMAIN/
-mkdir -p /usr/local/collaborator/keys/
+    CERTBOT_DOMAIN=$1
+    if [ -z $1 ];
+    then
+        echo "Missing mandatory argument. "
+        echo " - Usage: $0  <domain> "
+        exit 1
+    fi
+    CERT_PATH=/etc/letsencrypt/live/$CERTBOT_DOMAIN/
+    mkdir -p /usr/local/collaborator/keys/
 
-if [[ -f $CERT_PATH/privkey.pem && -f $CERT_PATH/fullchain.pem && -f $CERT_PATH/cert.pem ]]; then
-        cp $CERT_PATH/privkey.pem /usr/local/collaborator/keys/
-        cp $CERT_PATH/fullchain.pem /usr/local/collaborator/keys/
-        cp $CERT_PATH/cert.pem /usr/local/collaborator/keys/
-        chown -R collaborator /usr/local/collaborator/keys
-        echo "Certificates installed successfully"
-else
-        echo "Unable to find certificates in $CERT_PATH"
-fi
-```
+    if [[ -f $CERT_PATH/privkey.pem && -f $CERT_PATH/fullchain.pem && -f $CERT_PATH/cert.pem ]]; then
+            cp $CERT_PATH/privkey.pem /usr/local/collaborator/keys/
+            cp $CERT_PATH/fullchain.pem /usr/local/collaborator/keys/
+            cp $CERT_PATH/cert.pem /usr/local/collaborator/keys/
+            chown -R collaborator /usr/local/collaborator/keys
+            echo "Certificates installed successfully"
+    else
+            echo "Unable to find certificates in $CERT_PATH"
+    fi
+    ```
 
 
 9. Run Certbot
@@ -175,13 +175,13 @@ fi
 * Enter your email and regional information when prompted.
 * Next follow the instructions. You will be promopted to add TXT records to your domain provider. Ensure you give these records about 5 minutes to populate before proceeding.
 
-`certbot certonly -d subdomain.domain.com -d *.subdomain.domain.com  --server https://acme-v02.api.letsencrypt.org/directory --manual --agree-tos --no-eff-email --manual-public-ip-logging-ok --preferred-challenges dns-01`
+    `certbot certonly -d subdomain.domain.com -d *.subdomain.domain.com  --server https://acme-v02.api.letsencrypt.org/directory --manual --agree-tos --no-eff-email --manual-public-ip-logging-ok --preferred-challenges dns-01`
 
 
 
 10. Configure and Install Certs
 
-`chmod +x /usr/local/collaborator/configure_certs.sh && /usr/local/collaborator/configure_certs.sh subdomain.domain.com`
+    `chmod +x /usr/local/collaborator/configure_certs.sh && /usr/local/collaborator/configure_certs.sh subdomain.domain.com`
 
 
 11. Update your DNS Records to point torward your Collaborator Server VPS
@@ -194,7 +194,7 @@ fi
 
 *Note - Your BurpSuite Version may be different*
 
-`/usr/bin/java -Xms10m -Xmx200m -XX:GCTimeRatio=19 -jar /usr/local/collaborator/burpsuite_pro_v2022.3.9.jar --collaborator-server --collaborator-config=/usr/local/collaborator/collaborator.config`
+    `/usr/bin/java -Xms10m -Xmx200m -XX:GCTimeRatio=19 -jar /usr/local/collaborator/burpsuite_pro_v2022.3.9.jar --collaborator-server --collaborator-config=/usr/local/collaborator/collaborator.config`
 
 * Once complete exit and kill the process.
 
@@ -214,58 +214,58 @@ fi
 * Create a App with a Webhook - https://api.slack.com/apps?new_app=1
 * Once complete put all contents into the $HOME/.config/notify/provider-config.yaml file for "Notify".
 
-```
-slack:
-  - id: "slack"
-    slack_channel: "CHANNEL NAME"
-    slack_username: "BOT USERNAME"
-    slack_format: "{{data}}"
-    slack_webhook_url: "https://hooks.slack.com/services/XXXXXX"
+    ```
+    slack:
+      - id: "slack"
+        slack_channel: "CHANNEL NAME"
+        slack_username: "BOT USERNAME"
+        slack_format: "{{data}}"
+        slack_webhook_url: "https://hooks.slack.com/services/XXXXXX"
 
-```
+    ```
 
 
 15. Create a bash script that can be run Notify and the Collaborator Instance via "systemctl".
 
-`nano /usr/local/collaborator/collaborator_start`
+    `nano /usr/local/collaborator/collaborator_start`
 
-```
-#!/bin/bash
+    ```
+    #!/bin/bash
 
-/usr/bin/java -Xms10m -Xmx200m -XX:GCTimeRatio=19 -jar /usr/local/collaborator/burpsuite_pro_v2022.3.9.jar --collaborator-server --collaborator-config=/usr/local/collaborator/collaborator.config | /usr/bin/notify -silent
+    /usr/bin/java -Xms10m -Xmx200m -XX:GCTimeRatio=19 -jar /usr/local/collaborator/burpsuite_pro_v2022.3.9.jar --collaborator-server --collaborator-config=/usr/local/collaborator/collaborator.config | /usr/bin/notify -silent
 
-```
+    ```
 
-`chmod +x /usr/local/collaborator/collaborator_start`
+    `chmod +x /usr/local/collaborator/collaborator_start`
 
 *Note - we run notify in "silent" mode in order to prevent the banner from showing*
 
 
 16. Create a "systemctl" script
 
-`nano /etc/systemd/system/collaborator.service`
+    `nano /etc/systemd/system/collaborator.service`
 
-```
-[Unit]
-Description=Burp Collaborator Server Daemon
-After=network.target
+    ```
+    [Unit]
+    Description=Burp Collaborator Server Daemon
+    After=network.target
 
-[Service]
-Type=simple
-User=root
-UMask=777
-ExecStart=/usr/bin/java -Xms10m -Xmx200m -XX:GCTimeRatio=19 -jar /usr/local/collaborator/burpsuite_pro_v2022.3.9.jar --collaborator-server --collaborator-config=/usr/local/collaborator/collaborator.config
-Restart=on-failure
+    [Service]
+    Type=simple
+    User=root
+    UMask=777
+    ExecStart=/usr/bin/java -Xms10m -Xmx200m -XX:GCTimeRatio=19 -jar /usr/local/collaborator/burpsuite_pro_v2022.3.9.jar --collaborator-server --collaborator-config=/usr/local/collaborator/collaborator.config
+    Restart=on-failure
 
-# Configures the time to wait before service is stopped forcefully.
-TimeoutStopSec=300
+    # Configures the time to wait before service is stopped forcefully.
+    TimeoutStopSec=300
 
-[Install]
-WantedBy=multi-user.target
-```
+    [Install]
+    WantedBy=multi-user.target
+    ```
 
-`systemctl enable collaborator`
-`systemctl start collaborator`
+    `systemctl enable collaborator`
+    `systemctl start collaborator`
 
 
 17. Start/ Test the server and run another Health Check via your Burpsuite Client (Local). This should trigger Slack Notifications.
