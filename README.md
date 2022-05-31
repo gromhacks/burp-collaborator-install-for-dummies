@@ -4,7 +4,7 @@ This is just a quick guide on how to install your own burp collaborator server. 
 
 A few updates:
 
-* You can install certbot-auto via "apt" you do now need to run the orginal wget command.
+* You can install certbot-auto via "apt" you do now need to run the original wget command.
 * This guide utilizes [Notify](https://github.com/projectdiscovery/notify) by https://projectdiscovery.io/ to send notifcations to a Slack instance.
 
 ## Setting Up Your Own Burp-Collaborator Server
